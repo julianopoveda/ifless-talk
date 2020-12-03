@@ -5,8 +5,7 @@ namespace tdc_ifless
     class Program
     {
         static void Main(int[] args)
-        {
-            bool ingressoValido = (numeroIngresso > 0 && numeroIngresso < 10000);
+        {            
             if (IngressoIsValid(args[0]))
                 Console.WriteLine("Pode entrar");
             else

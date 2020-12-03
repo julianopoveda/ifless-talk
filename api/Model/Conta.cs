@@ -1,13 +1,16 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Model
 {
     public abstract class Conta
     {
-        public Correntista Correntista { get; set; }
+        [Key]
         public int NumeroConta { get; set; }
+        public Correntista Correntista { get; set; }
         public decimal Saldo { get; set; }
+
+        protected Conta() { }
 
         public abstract decimal EfetuarDeposito(DateTime dataDeposito, decimal valor);
     }
@@ -15,6 +18,8 @@ namespace api.Model
     public class ContaCorrente : Conta
     {
         public bool AplicarTaxas { get; set; }
+
+        protected ContaCorrente() { }
 
         public static ContaCorrente NovaContaCorrente(Correntista correntista, decimal saldoInicial, bool aplicarTaxas)
         {
@@ -50,6 +55,7 @@ namespace api.Model
 
         public Business.IRegraJuros Regra { get; set; }
 
+        protected ContaPoupanca() { }
         public ContaPoupanca(Correntista correntista, int numeroConta, decimal saldo, DateTime dataPrimeiroDeposito, Business.IRegraJuros regra)
         {
             Correntista = correntista;
@@ -91,8 +97,7 @@ namespace api.Model
 
             if (DataPrimeiroDeposito == DateTime.MinValue)
                 return 0;
-
-            if (DataPrimeiroDeposito > DateTime.MinValue && DataPrimeiroDeposito <= dataCorteRegraNova)
+            else if (DataPrimeiroDeposito > DateTime.MinValue && DataPrimeiroDeposito <= dataCorteRegraNova)
                 saldoAtualizado = new Business.RegraAntiga().AtualizarSaldo(Saldo, DataPrimeiroDeposito);
             else
                 saldoAtualizado = new Business.RegraNova().AtualizarSaldo(Saldo, DataPrimeiroDeposito);

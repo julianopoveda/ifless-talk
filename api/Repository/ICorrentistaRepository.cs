@@ -6,7 +6,8 @@ namespace api.Repository
     {
          void Insert(Correntista correntista);
          void update(Correntista correntista);
+         Correntista GetByCPF(string cpf);
 
-         Conta GetAccountById(int accountNumber);
+         Conta GetAccountById(int accountNumber);        
     }
 }

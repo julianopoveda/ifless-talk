@@ -1,4 +1,5 @@
 using System.Linq;
+using api.CustomExceptions;
 using api.Model;
 
 namespace api.Repository
@@ -14,17 +15,29 @@ namespace api.Repository
 
         public void Insert(Correntista correntista)
         {
-            throw new System.NotImplementedException();
+            _context.Correntistas.Add(correntista);
+            _context.SaveChanges();
         }
 
         public void update(Correntista correntista)
         {
-            throw new System.NotImplementedException();
+            _context.Correntistas.Update(correntista);
+            _context.SaveChanges();
         }
 
         public Conta GetAccountById(int accountNumber)
         {
             return _context.Contas.FirstOrDefault(f => f.NumeroConta == accountNumber);
+        }
+
+        public Correntista GetByCPF(string cpf)
+        {
+            Correntista registro = _context.Correntistas.SingleOrDefault(f => f.CPF == cpf);
+            
+            if (registro == null)
+                throw new RecordNotFoundException();
+            
+            return registro;
         }
     }
 }
